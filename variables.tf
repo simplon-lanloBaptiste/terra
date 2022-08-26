@@ -7,3 +7,8 @@ variable "resource_group_location" {
   default     = "eastus"
   description = "Location of the resource group."
 }
+
+variable "prefix" {
+  default ="b4g4"
+  description =" ça n'as pas d'importance"
+}
