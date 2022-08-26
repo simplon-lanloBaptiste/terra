@@ -14,3 +14,10 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 }
+
+
+resource "azurerm_subnet" "myterraformsubnet" {
+  name                 = "Tf_subnet_g4"
+  resource_group_name  = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
+  address_prefixes     = ["10.0.4.0/24"]
