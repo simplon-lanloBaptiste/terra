@@ -88,5 +88,6 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
 
   computer_name                   = "myvm"
   admin_username                  = "azureuser"
-  disable_password_authentication = true
+  disable_password_authentication = false
+  password                        = "123456Azerty$."
 }
