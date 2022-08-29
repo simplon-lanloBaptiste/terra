@@ -26,6 +26,7 @@ resource "azurerm_subnet" "myterraformsubnet" {
 resource "azurerm_public_ip" "mypublicip" {
   name                 = "${var.prefix}_public_ip"
   resource_group_name  = azurerm_resource_group.rg.name
+  location             = azurerm_resource_group.rg.location
   # virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
   address_prefixes     = ["10.0.4.1/24"]
   allocation_method    = "Static"
