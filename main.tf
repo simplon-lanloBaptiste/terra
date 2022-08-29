@@ -23,7 +23,7 @@ resource "azurerm_subnet" "myterraformsubnet" {
   address_prefixes     = ["10.0.4.0/24"]
 }
 #creat public ip 
-resource "azurerm_puclic_ip" "mypuclicip" {
+resource "azurerm_public_ip" "mypublicip" {
   name                 = "${var.prefix}_public_ip"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
@@ -61,7 +61,7 @@ resource "azurerm_network_interface" "myterraformnetworkinterface" {
     name                          = "${var.prefix}_ip_config"
     subnet_id                     = azurerm_subnet.myterraformsubnet.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.mypuclicip.id
+    public_ip_address_id          = azurerm_public_ip.mypublicip.id
   }
 }
 
