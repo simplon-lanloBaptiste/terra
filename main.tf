@@ -65,6 +65,12 @@ resource "azurerm_network_interface" "myterraformnetworkinterface" {
   }
 }
 
+# Connect the security group to the network interface
+resource "azurerm_network_interface_security_group_association" "terraformconnect" {
+  network_interface_id      = azurerm_network_interface.myterraformnetworkinterface.id
+  network_security_group_id = azurerm_network_security_group.myterraformsecuritygroup.id
+}
+
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
   name                  = "${var.prefix}_vm"
@@ -90,4 +96,38 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
   admin_username                  = "azureuser"
   disable_password_authentication = false
   admin_password                  = "123456Azerty$."
+}
+
+# NOTE: the Name used for Redis needs to be globally unique
+resource "azurerm_redis_cache" "redis_azure" {
+  name                = "${var.prefix}_redis"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  capacity            = 2
+  family              = "C"
+  sku_name            = "Standard"
+  enable_non_ssl_port = false
+  minimum_tls_version = "1.2"
+
+  redis_configuration {
+  }
+}
+#mariadb
+resource "azurerm_mariadb_server" "mariadbterraform" {
+  name                = "${var.prefix}_mariadb"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  administrator_login          = "mariadbadmin"
+  administrator_login_password = "H@Sh1CoR3!"
+
+  sku_name   = "B_Gen5_2"
+  storage_mb = 5120
+  version    = "10.2"
+
+  auto_grow_enabled             = true
+  backup_retention_days         = 7
+  geo_redundant_backup_enabled  = false
+  public_network_access_enabled = false
+  ssl_enforcement_enabled       = true
 }
