@@ -100,7 +100,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
 
 # NOTE: the Name used for Redis needs to be globally unique
 resource "azurerm_redis_cache" "redis_azure" {
-  name                = "${var.prefix}_redis"
+  name                = "${var.prefix}redis"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   capacity            = 2
