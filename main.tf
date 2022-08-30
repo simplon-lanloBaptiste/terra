@@ -114,7 +114,7 @@ resource "azurerm_redis_cache" "redis_azure" {
 }
 #mariadb
 resource "azurerm_mariadb_server" "mariadbterraform" {
-  name                = "${var.prefix}_mariadb"
+  name                = "${var.prefix}mariadb"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
