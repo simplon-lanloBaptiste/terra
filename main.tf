@@ -98,6 +98,32 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
   admin_password                  = "123456Azerty$."
 }
 
+resource "azurerm_linux_virtual_machine" "myterraformwings" {
+  name                  = "${var.prefix}_wings"
+  location              = azurerm_resource_group.rg.location
+  resource_group_name   = azurerm_resource_group.rg.name
+  network_interface_ids = [azurerm_network_interface.myterraformnetworkinterface.id]
+  size                  = "Standard_DS1_v2"
+
+  os_disk {
+    name                 = "myOsDisk"
+    caching              = "ReadWrite"
+    storage_account_type = "Premium_LRS"
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "18.04-LTS"
+    version   = "latest"
+  }
+
+  computer_name                   = "myvm"
+  admin_username                  = "wingsuser"
+  disable_password_authentication = false
+  admin_password                  = "123456ytreza$."
+}
+
 # NOTE: the Name used for Redis needs to be globally unique
 resource "azurerm_redis_cache" "redis_azure" {
   name                = "${var.prefix}redis"
