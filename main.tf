@@ -15,6 +15,14 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
   resource_group_name = azurerm_resource_group.rg.name
 }
 
+# Create virtual network
+resource "azurerm_virtual_network" "myterraformnetwork" {
+  name                = "${var.prefix}_wings_vnet"
+  address_space       = ["10.0.6.0/24"]
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+}
+
 #creat subnet
 resource "azurerm_subnet" "myterraformsubnetpterodactil" {
   name                 = "${var.prefix}_subnet_pterodactil"
@@ -28,7 +36,7 @@ resource "azurerm_subnet" "myterraformsubnetwings" {
   name                 = "${var.prefix}_subnet_wings"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
-  address_prefixes     = ["10.0.5.0/24"]
+  address_prefixes     = ["10.0.6.0/24"]
 }
 #creat public ip 
 resource "azurerm_public_ip" "mypublicip" {
