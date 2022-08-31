@@ -16,7 +16,7 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
 }
 
 # Create virtual network
-resource "azurerm_virtual_network" "myterraformnetwork" {
+resource "azurerm_virtual_network" "myterraformnetworkwings" {
   name                = "${var.prefix}_wings_vnet"
   address_space       = ["10.0.6.0/24"]
   location            = azurerm_resource_group.rg.location
