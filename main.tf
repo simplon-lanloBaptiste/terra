@@ -16,11 +16,19 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
 }
 
 #creat subnet
-resource "azurerm_subnet" "myterraformsubnet" {
-  name                 = "${var.prefix}_subnet"
+resource "azurerm_subnet" "myterraformsubnetpterodactil" {
+  name                 = "${var.prefix}_subnet_pterodactil"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
   address_prefixes     = ["10.0.4.0/24"]
+}
+
+#creat subnet 2
+resource "azurerm_subnet" "myterraformsubnetwings" {
+  name                 = "${var.prefix}_subnet_wings"
+  resource_group_name  = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
+  address_prefixes     = ["10.0.5.0/24"]
 }
 #creat public ip 
 resource "azurerm_public_ip" "mypublicip" {
@@ -156,4 +164,28 @@ resource "azurerm_mariadb_server" "mariadbterraform" {
   geo_redundant_backup_enabled  = false
   public_network_access_enabled = true
   ssl_enforcement_enabled       = true
+}
+
+resource "azurerm_lb" "load-balance {
+  name                = "${var.prefix}_load-blance"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  frontend_ip_configuration {
+    name                 = "${var.prefix}ip_public"
+    public_ip_address_id = azurerm_public_ip.mypublicip.id
+  }
+}
+
+resource "azurerm_storage_account" "storageaccount" {
+  name                     = "${var.prefix}_account_storage"
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+  minimum_tls_version  = "TLS1_2"
+
+  tags = {
+    environment = "staging"
+  }
 }
