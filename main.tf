@@ -35,7 +35,7 @@ resource "azurerm_subnet" "myterraformsubnetpterodactil" {
 resource "azurerm_subnet" "myterraformsubnetwings" {
   name                 = "${var.prefix}_subnet_wings"
   resource_group_name  = azurerm_resource_group.rg.name
-  virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
+  virtual_network_name = azurerm_virtual_network.myterraformnetworkwings.name
   address_prefixes     = ["10.0.6.0/24"]
 }
 #creat public ip 
