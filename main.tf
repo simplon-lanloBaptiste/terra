@@ -67,7 +67,7 @@ resource "azurerm_network_interface" "myterraformnetworkinterface" {
 
   ip_configuration {
     name                          = "${var.prefix}_ip_config"
-    subnet_id                     = azurerm_subnet.myterraformsubnet.id
+    subnet_id                     = azurerm_subnet.myterraformsubnetpterodactil.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.mypublicip.id
   }
@@ -174,18 +174,5 @@ resource "azurerm_lb" "load-balance" {
   frontend_ip_configuration {
     name                 = "${var.prefix}ip_public"
     public_ip_address_id = azurerm_public_ip.mypublicip.id
-  }
-}
-
-resource "azurerm_storage_account" "storageaccount" {
-  name                     = "${var.prefix}_account_storage"
-  resource_group_name      = azurerm_resource_group.rg.name
-  location                 = azurerm_resource_group.rg.location
-  account_tier             = "Standard"
-  account_replication_type = "GRS"
-  minimum_tls_version  = "TLS1_2"
-
-  tags = {
-    environment = "staging"
   }
 }
