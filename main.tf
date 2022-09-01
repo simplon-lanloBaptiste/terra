@@ -187,6 +187,12 @@ resource "azurerm_lb" "load-balance" {
 
   frontend_ip_configuration {
     name                 = "${var.prefix}ip_public"
-    public_ip_address_id = azurerm_public_ip.mypublicip.id
+    public_ip_address_id = azurerm_public_ip.mypublicip2.id
   }
+}
+
+
+resource "azurerm_lb_backend_address_pool" "backendpool" {
+  loadbalancer_id = azurerm_lb.load-balance.id
+  name            = "BackEndAddressPool"
 }
