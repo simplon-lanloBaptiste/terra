@@ -47,7 +47,7 @@ resource "azurerm_public_ip" "mypublicip" {
   allocation_method    = "Static"
 }
 # create public ip 2
-resource "azurerm_public_ip" "mypublicip" {
+resource "azurerm_public_ip" "mypublicip2" {
   name                 = "${var.prefix}_public_ip2"
   resource_group_name  = azurerm_resource_group.rg.name
   location             = azurerm_resource_group.rg.location
