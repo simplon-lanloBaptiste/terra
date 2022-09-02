@@ -15,13 +15,6 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
   resource_group_name = azurerm_resource_group.rg.name
 }
 
-# Create virtual network
-resource "azurerm_virtual_network" "myterraformnetworkwings" {
-  name                = "${var.prefix}_wings_vnet"
-  address_space       = ["10.0.6.0/24"]
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-}
 
 # create subnet 1
 resource "azurerm_subnet" "myterraformsubnetpterodactil" {
@@ -35,7 +28,7 @@ resource "azurerm_subnet" "myterraformsubnetpterodactil" {
 resource "azurerm_subnet" "myterraformsubnetwings" {
   name                 = "${var.prefix}_subnet_wings"
   resource_group_name  = azurerm_resource_group.rg.name
-  virtual_network_name = azurerm_virtual_network.myterraformnetworkwings.name
+  virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
   address_prefixes     = ["10.0.6.0/24"]
 }
 # create public ip 1
@@ -196,13 +189,20 @@ resource "azurerm_lb_backend_address_pool" "backendpoolpanel" {
   resource_group_name = azurerm_resource_group.rg.name
   loadbalancer_id     = azurerm_lb.load-balance.id
   name                = "BackEndAddressPool"
-  backend_ip_configurations = azurerm_public_ip.mypublicip.id
 }
-resource "azurerm_lb_backend_address_pool" "backendpoolwings" {
-  resource_group_name = azurerm_resource_group.rg.name
-  loadbalancer_id     = azurerm_lb.load-balance.id
-  name                = "BackEndAddressPool"
-  backend_ip_configurations = azurerm_public_ip.mypublicip2.id
+
+resource "azurerm_lb_backend_address_pool_address" "backendpollAdresse" {
+  name                    = "example"
+  backend_address_pool_id = data.azurerm_lb_backend_address_pool.backendpoolpanel.id
+  virtual_network_id      = data.azurerm_virtual_network.myterraformnetwork.id
+  ip_address              = azurerm_linux_virtual_machine.myterraformvm.ip
+}
+
+resource "azurerm_lb_backend_address_pool_address" "backendpollAdresse2" {
+  name                    = "example"
+  backend_address_pool_id = data.azurerm_lb_backend_address_pool.backendpoolpanel.id
+  virtual_network_id      = data.azurerm_virtual_network.myterraformnetwork.id
+  ip_address              = azurerm_linux_virtual_machine.myterraformwings.ip
 }
 
 resource "azurerm_lb_outbound_rule" "outbound_rule_panel" {
