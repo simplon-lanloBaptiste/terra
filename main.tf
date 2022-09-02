@@ -193,8 +193,6 @@ resource "azurerm_lb_backend_address_pool" "backendpoolpanel" {
 
 resource "azurerm_lb_backend_address_pool_address" "backendpollAdresse" {
   name                    = "example"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
   backend_address_pool_id = azurerm_lb_backend_address_pool.backendpoolpanel.id
   virtual_network_id      = azurerm_virtual_network.myterraformnetwork.id
   ip_address              = azurerm_linux_virtual_machine.myterraformvm.id
@@ -202,7 +200,6 @@ resource "azurerm_lb_backend_address_pool_address" "backendpollAdresse" {
 
 resource "azurerm_lb_backend_address_pool_address" "backendpollAdresse2" {
   name                    = "example"
-  resource_group_name = azurerm_resource_group.rg.name
   backend_address_pool_id = azurerm_lb_backend_address_pool.backendpoolpanel.id
   virtual_network_id      = azurerm_virtual_network.myterraformnetwork.id
   ip_address              = azurerm_linux_virtual_machine.myterraformwings.id
