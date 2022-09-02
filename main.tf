@@ -193,20 +193,26 @@ resource "azurerm_lb_backend_address_pool" "backendpoolpanel" {
 
 resource "azurerm_lb_backend_address_pool_address" "backendpollAdresse" {
   name                    = "example"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   backend_address_pool_id = data.azurerm_lb_backend_address_pool.backendpoolpanel.id
   virtual_network_id      = data.azurerm_virtual_network.myterraformnetwork.id
-  ip_address              = azurerm_linux_virtual_machine.myterraformvm.ip
+  ip_address              = azurerm_linux_virtual_machine.myterraformvm.id
 }
 
 resource "azurerm_lb_backend_address_pool_address" "backendpollAdresse2" {
   name                    = "example"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   backend_address_pool_id = data.azurerm_lb_backend_address_pool.backendpoolpanel.id
   virtual_network_id      = data.azurerm_virtual_network.myterraformnetwork.id
-  ip_address              = azurerm_linux_virtual_machine.myterraformwings.ip
+  ip_address              = azurerm_linux_virtual_machine.myterraformwings.id
 }
 
 resource "azurerm_lb_outbound_rule" "outbound_rule_panel" {
   name                    = "${var.prefix}OutboundRule"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   loadbalancer_id         = azurerm_lb.load-balance.id
   protocol                = "Tcp"
   backend_address_pool_id = azurerm_lb_backend_address_pool.backendpoolpanel.id
@@ -217,6 +223,8 @@ resource "azurerm_lb_outbound_rule" "outbound_rule_panel" {
 }
 
 resource "azurerm_lb_outbound_rule" "outbound_rule_wings" {
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   name                    = "${var.prefix}OutboundRule"
   loadbalancer_id         = azurerm_lb.load-balance.id
   protocol                = "Tcp"
