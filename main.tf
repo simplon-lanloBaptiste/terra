@@ -195,14 +195,14 @@ resource "azurerm_lb_backend_address_pool_address" "backendpollAdresse" {
   name                    = "example"
   backend_address_pool_id = azurerm_lb_backend_address_pool.backendpoolpanel.id
   virtual_network_id      = azurerm_virtual_network.myterraformnetwork.id
-  ip_address              = azurerm_linux_virtual_machine.myterraformvm.id
+  ip_address              = azurerm_linux_virtual_machine.myterraformnetworkinterface.private_ip_address
 }
 
 resource "azurerm_lb_backend_address_pool_address" "backendpollAdresse2" {
   name                    = "example"
   backend_address_pool_id = azurerm_lb_backend_address_pool.backendpoolpanel.id
   virtual_network_id      = azurerm_virtual_network.myterraformnetwork.id
-  ip_address              = azurerm_linux_virtual_machine.myterraformwings.id
+  ip_address              = azurerm_network_interface.myterraformnetworkinterface.private_ip_address
 }
 
 resource "azurerm_lb_outbound_rule" "outbound_rule_panel" {
@@ -213,7 +213,7 @@ resource "azurerm_lb_outbound_rule" "outbound_rule_panel" {
   backend_address_pool_id = azurerm_lb_backend_address_pool.backendpoolpanel.id
 
   frontend_ip_configuration {
-    name = "PublicIPAddress"
+    name = "${var.prefix}ip_public2"
   }
 }
 
