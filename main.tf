@@ -217,18 +217,6 @@ resource "azurerm_lb_outbound_rule" "outbound_rule_panel" {
   }
 }
 
-resource "azurerm_lb_outbound_rule" "outbound_rule_wings" {
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  name                    = "${var.prefix}OutboundRule"
-  loadbalancer_id         = azurerm_lb.load-balance.id
-  protocol                = "Tcp"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.backendpoolwings.id
-
-  frontend_ip_configuration {
-    name = "PublicIPAddress"
-  }
-}
 # resource "azurerm_virtual_machine_scale_set" "scaleset" {
 #   name                = "${var.prefix}_scaleset"
 #   location            = azurerm_resource_group.rg.location
