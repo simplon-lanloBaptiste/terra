@@ -177,19 +177,19 @@ resource "azurerm_linux_virtual_machine" "myterraformwings" {
 }
 
 # NOTE: the Name used for Redis needs to be globally unique
-resource "azurerm_redis_cache" "redis_azure" {
-  name                = "${var.prefix}redis"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  capacity            = 2
-  family              = "C"
-  sku_name            = "Standard"
-  enable_non_ssl_port = false
-  minimum_tls_version = "1.2"
+# resource "azurerm_redis_cache" "redis_azure" {
+#   name                = "${var.prefix}redis"
+#   location            = azurerm_resource_group.rg.location
+#   resource_group_name = azurerm_resource_group.rg.name
+#   capacity            = 2
+#   family              = "C"
+#   sku_name            = "Standard"
+#   enable_non_ssl_port = false
+#   minimum_tls_version = "1.2"
 
-  redis_configuration {
-  }
-}
+#   redis_configuration {
+#   }
+# }
 #mariadb
 resource "azurerm_mariadb_server" "mariadbterraform" {
   name                = "${var.prefix}mariadb"
@@ -247,77 +247,3 @@ resource "azurerm_lb_outbound_rule" "outbound_rule_panel" {
     name = "${var.prefix}ip_public2"
   }
 }
-
-# resource "azurerm_virtual_machine_scale_set" "scaleset" {
-#   name                = "${var.prefix}_scaleset"
-#   location            = azurerm_resource_group.rg.location
-#   resource_group_name = azurerm_resource_group.rg.name
-
-#   # automatic rolling upgrade
-#   automatic_os_upgrade = true
-#   upgrade_policy_mode  = "Rolling"
-
-#   rolling_upgrade_policy {
-#     max_batch_instance_percent              = 20
-#     max_unhealthy_instance_percent          = 20
-#     max_unhealthy_upgraded_instance_percent = 5
-#     pause_time_between_batches              = "PT0S"
-#   }
-
-#   # required when using rolling upgrade policy
-#   health_probe_id = azurerm_lb_probe.example.id
-
-#   sku {
-#     name     = "Standard_F2"
-#     tier     = "Standard"
-#     capacity = 2
-#   }
-
-#   storage_profile_image_reference {
-#     publisher = "Canonical"
-#     offer     = "UbuntuServer"
-#     sku       = "18.04-LTS"
-#     version   = "latest"
-#   }
-
-#   storage_profile_os_disk {
-#     name              = "scaleset"
-#     caching           = "ReadWrite"
-#     create_option     = "FromImage"
-#     managed_disk_type = "Standard_LRS"
-#   }
-
-#   storage_profile_data_disk {
-#     lun           = 0
-#     caching       = "ReadWrite"
-#     create_option = "Empty"
-#     disk_size_gb  = 10
-#   }
-
-#   os_profile {
-#     computer_name_prefix = "testvm"
-#     admin_username       = "myadmin"
-#   }
-
-#   os_profile_linux_config {
-#     disable_password_authentication = false
-#     admin_password = "azerty123456$."
-#   }
-
-#   network_profile {
-#     name    = "terraformnetworkprofile"
-#     primary = true
-
-#     ip_configuration {
-#       name                                   = "TestIPConfiguration"
-#       primary                                = true
-#       subnet_id                              = azurerm_subnet.myterraformsubnetwing.id
-#       load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.bpepool.id]
-#       load_balancer_inbound_nat_rules_ids    = [azurerm_lb_nat_pool.lbnatpool.id]
-#     }
-#   }
-
-#   tags = {
-#     environment = "staging"
-#   }
-# }
