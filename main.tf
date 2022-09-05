@@ -10,7 +10,7 @@ resource "azurerm_resource_group" "rg" {
 # Create virtual network
 resource "azurerm_virtual_network" "myterraformnetwork" {
   name                = "Tf_vnet_g4"
-  address_space       = ["10.0.4.0/21"]
+  address_space       = ["10.0.0.0/21"]
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 }
@@ -176,19 +176,19 @@ resource "azurerm_linux_virtual_machine" "myterraformwings" {
 }
 
 # NOTE: the Name used for Redis needs to be globally unique
-# resource "azurerm_redis_cache" "redis_azure" {
-#   name                = "${var.prefix}redis"
-#   location            = azurerm_resource_group.rg.location
-#   resource_group_name = azurerm_resource_group.rg.name
-#   capacity            = 2
-#   family              = "C"
-#   sku_name            = "Standard"
-#   enable_non_ssl_port = false
-#   minimum_tls_version = "1.2"
+resource "azurerm_redis_cache" "redis_azure" {
+  name                = "${var.prefix}redis"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  capacity            = 2
+  family              = "C"
+  sku_name            = "Standard"
+  enable_non_ssl_port = false
+  minimum_tls_version = "1.2"
 
-#   redis_configuration {
-#   }
-# }
+  redis_configuration {
+  }
+}
 #mariadb
 resource "azurerm_mariadb_server" "mariadbterraform" {
   name                = "${var.prefix}mariadb"
