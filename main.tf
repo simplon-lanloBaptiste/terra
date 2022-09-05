@@ -46,7 +46,7 @@ resource "azurerm_public_ip" "mypublicip2" {
   location             = azurerm_resource_group.rg.location
   # virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
   allocation_method    = "Static"
-  sku                  = "Standar"
+  sku                  = "Standard"
 }
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "myterraformsecuritygroup" {
@@ -75,7 +75,7 @@ resource "azurerm_network_interface" "myterraformnetworkinterface" {
 
   ip_configuration {
     name                          = "${var.prefix}_ip_config1"
-    subnet_id                     = azurerm_subnet.myterraformsubnepterodactill.id
+    subnet_id                     = azurerm_subnet.myterraformsubnepterodactil.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.mypublicip.id
   }
