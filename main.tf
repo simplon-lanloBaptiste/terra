@@ -69,7 +69,7 @@ resource "azurerm_network_security_group" "myterraformsecuritygroup" {
 
 # Create network interface public
 resource "azurerm_network_interface" "myterraformnetworkinterface" {
-  name                = "${var.prefix}_network_interface"
+  name                = "${var.prefix}_network_interface1"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
@@ -83,7 +83,7 @@ resource "azurerm_network_interface" "myterraformnetworkinterface" {
 
 #privé
 resource "azurerm_network_interface" "myterraformnetworkinterfaceWingsP1" {
-  name                = "${var.prefix}_network_interface"
+  name                = "${var.prefix}_network_interface2"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
@@ -95,7 +95,7 @@ resource "azurerm_network_interface" "myterraformnetworkinterfaceWingsP1" {
 }
 #privé
 resource "azurerm_network_interface" "myterraformnetworkinterfaceWingsP2" {
-  name                = "${var.prefix}_network_interface"
+  name                = "${var.prefix}_network_interface3"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
@@ -107,7 +107,7 @@ resource "azurerm_network_interface" "myterraformnetworkinterfaceWingsP2" {
 }
 #privé
 resource "azurerm_network_interface" "myterraformnetworkinterfaceWingsP3" {
-  name                = "${var.prefix}_network_interface"
+  name                = "${var.prefix}_network_interface4"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
