@@ -127,8 +127,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvmpanel" {
   name                  = "${var.prefix}_vm"
   location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name
-  network_interface_ids = [azurerm_network_interface.myterraformnetworkinterface.id]
-  network_interface_ids = [azurerm_network_interface.myterraformnetworkinterfaceWingsP1.id]
+  network_interface_ids = [azurerm_network_interface.myterraformnetworkinterface.id, azurerm_network_interface.myterraformnetworkinterfaceWingsP1.id]
   size                  = "Standard_DS1_v2"
 
   os_disk {
