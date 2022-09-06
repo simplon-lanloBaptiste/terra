@@ -262,14 +262,14 @@ resource "azurerm_lb_outbound_rule" "outbound_rule_panel" {
 
 
 resource "azurerm_recovery_services_vault" "myvault" {
-  name                = "${var.prefix}_vault"
+  name                = "${var.prefix}vault"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   sku                 = "Standard"
 }
 
 resource "azurerm_backup_policy_vm" "vault_policy" {
-  name                = "${var.prefix}_vault_policy"
+  name                = "${var.prefix}vaultpolicy"
   resource_group_name = azurerm_resource_group.rg.name
   recovery_vault_name = azurerm_recovery_services_vault.myvault.name
 
