@@ -15,14 +15,20 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
   resource_group_name = azurerm_resource_group.rg.name
 }
 
+resource "azurerm_virtual_network" "myterraformnetworkBastion" {
+  name                = "${var.prefix}_bastion_vnet"
+  address_space       = ["10.0.4.0/24"]
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+}
 
 # create subnet 1
-# resource "azurerm_subnet" "myterraformsubnetpterodactil" {
-#   name                 = "${var.prefix}_subnet_pterodactil"
-#   resource_group_name  = azurerm_resource_group.rg.name
-#   virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
-#   address_prefixes     = ["10.0.4.0/24"]
-# }
+resource "azurerm_subnet" "myterraformbastionsubnet" {
+  name                 = "${var.prefix}_subnet_bastion"
+  resource_group_name  = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.myterraformnetworkBastion.name
+  address_prefixes     = ["10.0.4.0/24"]
+}
 
 # create subnet 2
 resource "azurerm_subnet" "myterraformsubnepterodactil" {
@@ -36,7 +42,6 @@ resource "azurerm_public_ip" "mypublicip" {
   name                 = "${var.prefix}_public_ip1"
   resource_group_name  = azurerm_resource_group.rg.name
   location             = azurerm_resource_group.rg.location
-  # virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
   allocation_method    = "Static"
 }
 # create public ip 2
@@ -44,7 +49,14 @@ resource "azurerm_public_ip" "mypublicip2" {
   name                 = "${var.prefix}_public_ip2"
   resource_group_name  = azurerm_resource_group.rg.name
   location             = azurerm_resource_group.rg.location
-  # virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
+  allocation_method    = "Static"
+  sku                  = "Standard"
+}
+# create public ip 3
+resource "azurerm_public_ip" "mypublicip3" {
+  name                 = "${var.prefix}_public_ip3"
+  resource_group_name  = azurerm_resource_group.rg.name
+  location             = azurerm_resource_group.rg.location
   allocation_method    = "Static"
   sku                  = "Standard"
 }
@@ -245,5 +257,61 @@ resource "azurerm_lb_outbound_rule" "outbound_rule_panel" {
 
   frontend_ip_configuration {
     name = "${var.prefix}ip_public2"
+  }
+}
+
+
+resource "azurerm_recovery_services_vault" "myvault" {
+  name                = "${var.prefix}_vault"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  sku                 = "Standard"
+}
+
+resource "azurerm_backup_policy_vm" "vault_policy" {
+  name                = "${var.prefix}_vault_policy"
+  resource_group_name = azurerm_resource_group.rg.name
+  recovery_vault_name = azurerm_recovery_services_vault.myvault.name
+
+  timezone = "UTC"
+
+  backup {
+    frequency = "Daily"
+    time      = "23:00"
+  }
+
+  retention_daily {
+    count = 1
+  }
+
+  retention_weekly {
+    count    = 1
+    weekdays = ["Sunday", "Wednesday", "Friday", "Saturday"]
+  }
+
+  retention_monthly {
+    count    = 1
+    weekdays = ["Sunday", "Wednesday"]
+    weeks    = ["First", "Last"]
+  }
+
+  retention_yearly {
+    count    = 1
+    weekdays = ["Sunday"]
+    weeks    = ["Last"]
+    months   = ["January"]
+  }
+}
+
+
+resource "azurerm_bastion_host" "mybastion" {
+  name                = "${var.prefix}_bastion"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  ip_configuration {
+    name                 = "configuration"
+    subnet_id            = azurerm_subnet.myterraformbastionsubnet.id
+    public_ip_address_id = azurerm_public_ip.mypublicip3.id
   }
 }
