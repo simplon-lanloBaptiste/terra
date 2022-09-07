@@ -268,50 +268,50 @@ resource "azurerm_recovery_services_vault" "myvault" {
   sku                 = "Standard"
 }
 
-resource "azurerm_backup_policy_vm" "vault_policy" {
-  name                = "${var.prefix}vaultpolicy"
-  resource_group_name = azurerm_resource_group.rg.name
-  recovery_vault_name = azurerm_recovery_services_vault.myvault.name
+# resource "azurerm_backup_policy_vm" "vault_policy" {
+#   name                = "${var.prefix}vaultpolicy"
+#   resource_group_name = azurerm_resource_group.rg.name
+#   recovery_vault_name = azurerm_recovery_services_vault.myvault.name
 
-  timezone = "UTC"
+#   timezone = "UTC"
 
-  backup {
-    frequency = "Daily"
-    time      = "23:00"
-  }
+#   backup {
+#     frequency = "Daily"
+#     time      = "23:00"
+#   }
 
-  retention_daily {
-    count = 1
-  }
+#   retention_daily {
+#     count = 1
+#   }
 
-  retention_weekly {
-    count    = 1
-    weekdays = ["Sunday"]
-  }
+#   retention_weekly {
+#     count    = 1
+#     weekdays = ["Sunday"]
+#   }
 
-  retention_monthly {
-    count    = 4
-    weekdays = ["Sunday", "Wednesday"]
-    weeks    = ["First", "Last"]
-  }
+#   retention_monthly {
+#     count    = 4
+#     weekdays = ["Sunday", "Wednesday"]
+#     weeks    = ["First", "Last"]
+#   }
 
-  retention_yearly {
-    count    = 1
-    weekdays = ["Sunday"]
-    weeks    = ["Last"]
-    months   = ["January"]
-  }
-}
+#   retention_yearly {
+#     count    = 1
+#     weekdays = ["Sunday"]
+#     weeks    = ["Last"]
+#     months   = ["January"]
+#   }
+# }
 
 
-resource "azurerm_bastion_host" "mybastion" {
-  name                = "${var.prefix}_bastion"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+# resource "azurerm_bastion_host" "mybastion" {
+#   name                = "${var.prefix}_bastion"
+#   location            = azurerm_resource_group.rg.location
+#   resource_group_name = azurerm_resource_group.rg.name
 
-  ip_configuration {
-    name                 = "configuration"
-    subnet_id            = azurerm_subnet.myterraformbastionsubnet.id
-    public_ip_address_id = azurerm_public_ip.mypublicip3.id
-  }
-}
+#   ip_configuration {
+#     name                 = "configuration"
+#     subnet_id            = azurerm_subnet.myterraformbastionsubnet.id
+#     public_ip_address_id = azurerm_public_ip.mypublicip3.id
+#   }
+# }
