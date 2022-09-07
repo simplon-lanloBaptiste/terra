@@ -286,11 +286,11 @@ resource "azurerm_backup_policy_vm" "vault_policy" {
 
   retention_weekly {
     count    = 1
-    weekdays = ["Sunday", "Wednesday", "Friday", "Saturday"]
+    weekdays = ["Sunday"]
   }
 
   retention_monthly {
-    count    = 1
+    count    = 4
     weekdays = ["Sunday", "Wednesday"]
     weeks    = ["First", "Last"]
   }
