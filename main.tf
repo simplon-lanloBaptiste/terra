@@ -165,7 +165,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvmpanel" {
     sku       = "18.04-LTS"
     version   = "latest"
   }
-  custom_data                     = "gitea.yml"
+  custom_data                     = filebase64("gitea.yml")
   computer_name                   = "myvm"
   admin_username                  = "azureuser"
   disable_password_authentication = false
