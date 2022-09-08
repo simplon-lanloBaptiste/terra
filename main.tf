@@ -134,7 +134,17 @@ resource "azurerm_network_interface_security_group_association" "terraformconnec
   network_interface_id      = azurerm_network_interface.myterraformnetworkinterface.id
   network_security_group_id = azurerm_network_security_group.myterraformsecuritygroup.id
 }
+resource "azurerm_bastion_host" "mybastion" {
+  name                = "${var.prefix}_bastion"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
 
+  ip_configuration {
+    name                 = "configuration"
+    subnet_id            = azurerm_subnet.myterraformbastionsubnet.id
+    public_ip_address_id = azurerm_public_ip.mypublicip3.id
+  }
+}
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "myterraformvmpanel" {
   name                  = "${var.prefix}_vm"
@@ -155,53 +165,55 @@ resource "azurerm_linux_virtual_machine" "myterraformvmpanel" {
     sku       = "18.04-LTS"
     version   = "latest"
   }
-
+  custom_data                     = "gitea.yml"
   computer_name                   = "myvm"
   admin_username                  = "azureuser"
   disable_password_authentication = false
   admin_password                  = "123456Azerty$."
+
 }
 
-resource "azurerm_linux_virtual_machine" "myterraformwings" {
-  name                  = "${var.prefix}_wings"
-  location              = azurerm_resource_group.rg.location
-  resource_group_name   = azurerm_resource_group.rg.name
-  network_interface_ids = [azurerm_network_interface.myterraformnetworkinterfaceWingsP2.id]
-  size                  = "Standard_DS1_v2"
 
-  os_disk {
-    name                 = "myOsDisk"
-    caching              = "ReadWrite"
-    storage_account_type = "Premium_LRS"
-  }
+# resource "azurerm_linux_virtual_machine" "myterraformwings" {
+#   name                  = "${var.prefix}_wings"
+#   location              = azurerm_resource_group.rg.location
+#   resource_group_name   = azurerm_resource_group.rg.name
+#   network_interface_ids = [azurerm_network_interface.myterraformnetworkinterfaceWingsP2.id]
+#   size                  = "Standard_DS1_v2"
 
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
-    version   = "latest"
-  }
+#   os_disk {
+#     name                 = "myOsDisk"
+#     caching              = "ReadWrite"
+#     storage_account_type = "Premium_LRS"
+#   }
 
-  computer_name                   = "myvm"
-  admin_username                  = "wingsuser"
-  disable_password_authentication = false
-  admin_password                  = "123456ytreza$."
-}
+#   source_image_reference {
+#     publisher = "Canonical"
+#     offer     = "UbuntuServer"
+#     sku       = "18.04-LTS"
+#     version   = "latest"
+#   }
+
+#   computer_name                   = "myvm"
+#   admin_username                  = "wingsuser"
+#   disable_password_authentication = false
+#   admin_password                  = "123456ytreza$."
+# }
 
 # NOTE: the Name used for Redis needs to be globally unique
-resource "azurerm_redis_cache" "redis_azure" {
-  name                = "${var.prefix}redis"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  capacity            = 2
-  family              = "C"
-  sku_name            = "Standard"
-  enable_non_ssl_port = false
-  minimum_tls_version = "1.2"
+# resource "azurerm_redis_cache" "redis_azure" {
+#   name                = "${var.prefix}redis"
+#   location            = azurerm_resource_group.rg.location
+#   resource_group_name = azurerm_resource_group.rg.name
+#   capacity            = 2
+#   family              = "C"
+#   sku_name            = "Standard"
+#   enable_non_ssl_port = false
+#   minimum_tls_version = "1.2"
 
-  redis_configuration {
-  }
-}
+#   redis_configuration {
+#   }
+# }
 #mariadb
 resource "azurerm_mariadb_server" "mariadbterraform" {
   name                = "${var.prefix}mariadb"
@@ -268,50 +280,3 @@ resource "azurerm_recovery_services_vault" "myvault" {
   sku                 = "Standard"
 }
 
-# resource "azurerm_backup_policy_vm" "vault_policy" {
-#   name                = "${var.prefix}vaultpolicy"
-#   resource_group_name = azurerm_resource_group.rg.name
-#   recovery_vault_name = azurerm_recovery_services_vault.myvault.name
-
-#   timezone = "UTC"
-
-#   backup {
-#     frequency = "Daily"
-#     time      = "23:00"
-#   }
-
-#   retention_daily {
-#     count = 1
-#   }
-
-#   retention_weekly {
-#     count    = 1
-#     weekdays = ["Sunday"]
-#   }
-
-#   retention_monthly {
-#     count    = 4
-#     weekdays = ["Sunday", "Wednesday"]
-#     weeks    = ["First", "Last"]
-#   }
-
-#   retention_yearly {
-#     count    = 1
-#     weekdays = ["Sunday"]
-#     weeks    = ["Last"]
-#     months   = ["January"]
-#   }
-# }
-
-
-# resource "azurerm_bastion_host" "mybastion" {
-#   name                = "${var.prefix}_bastion"
-#   location            = azurerm_resource_group.rg.location
-#   resource_group_name = azurerm_resource_group.rg.name
-
-#   ip_configuration {
-#     name                 = "configuration"
-#     subnet_id            = azurerm_subnet.myterraformbastionsubnet.id
-#     public_ip_address_id = azurerm_public_ip.mypublicip3.id
-#   }
-# }
